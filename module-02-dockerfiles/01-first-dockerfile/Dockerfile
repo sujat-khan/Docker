@@ -6,7 +6,7 @@ FROM python:3.11-slim
 
 # ── METADATA ───────────────────────────────────────────
 # Labels are informational only — like name tags on the image
-LABEL maintainer="your-name@email.com"
+LABEL maintainer="sujatkhan24@gmail.com"
 LABEL version="1.0"
 LABEL description="My first custom Docker image"
 LABEL course="docker-mastery"

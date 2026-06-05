@@ -90,7 +90,7 @@ Watch the output — you'll see each layer being built:
 docker run --rm my-first-image:v1
 
 # Pass your name via environment variable
-docker run --rm -e YOUR_NAME="Alice" my-first-image:v1
+docker run --rm -e YOUR_NAME="Sujat" my-first-image:v1
 
 # See the image you built
 docker images

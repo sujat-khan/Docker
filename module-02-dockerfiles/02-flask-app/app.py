@@ -46,7 +46,7 @@ def echo():
     """Echoes back any JSON you POST. Useful for testing."""
     data = request.get_json(force=True, silent=True)
     if data is None:
-        return jsonify({"error": "No valid JSON body provided"}), 400
+        return jsonify({"error": "No valid JSON body provided- error"}), 400
     return jsonify({
         "you_sent": data,
         "received": True,
