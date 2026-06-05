@@ -1,0 +1,52 @@
+# docker-compose.yml — Multi-Container ML Stack
+#
+# Services:
+#   api      → FastAPI ML model serving (our custom image)
+#   redis    → Caching layer for predictions
+#   postgres → Persistent storage for prediction history
+
+services:
+
+  # ── FastAPI ML API ────────────────────────────────────
+  api:
+    build: ./api               # Build from ./api/Dockerfile
+    ports:
+      - "8000:8000"            # Access at http://localhost:8000
+    environment:
+      - REDIS_HOST=redis       # Service name is the hostname!
+      - REDIS_PORT=6379
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=mldb
+      - DB_USER=mluser
+      - DB_PASSWORD=mlpass
+    depends_on:
+      - redis
+      - postgres
+    restart: unless-stopped    # Restart if it crashes (but not if manually stopped)
+    volumes:
+      - ./api:/app             # Bind mount for live development
+
+  # ── Redis Cache ───────────────────────────────────────
+  redis:
+    image: redis:7-alpine      # Use official image, no custom build needed
+    ports:
+      - "6379:6379"            # Expose to host (useful for debugging)
+    # No custom config — defaults are fine for development
+
+  # ── PostgreSQL Database ───────────────────────────────
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: mluser
+      POSTGRES_PASSWORD: mlpass
+      POSTGRES_DB: mldb
+    ports:
+      - "5432:5432"            # Expose for local DB tools (e.g. DBeaver)
+    volumes:
+      - postgres-data:/var/lib/postgresql/data  # Named volume = data survives restart
+
+# ── Named Volumes ─────────────────────────────────────
+# Declared here so Docker manages them
+volumes:
+  postgres-data:

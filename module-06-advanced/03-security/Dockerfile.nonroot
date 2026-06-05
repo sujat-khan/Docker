@@ -1,0 +1,16 @@
+# ── Running as NON-ROOT (secure) ──────────────────────
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Create a non-root user and group
+RUN groupadd --system appgroup && \
+    useradd --system --gid appgroup --create-home appuser
+
+# Copy files and set ownership
+COPY --chown=appuser:appgroup demo.py .
+
+# Switch to non-root user BEFORE the app runs
+USER appuser
+
+CMD ["python", "demo.py"]

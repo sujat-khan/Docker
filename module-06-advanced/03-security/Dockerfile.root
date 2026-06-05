@@ -1,0 +1,6 @@
+# ── Running as ROOT (insecure — the default) ──────────
+FROM python:3.11-slim
+WORKDIR /app
+COPY demo.py .
+# No USER directive = runs as root
+CMD ["python", "demo.py"]

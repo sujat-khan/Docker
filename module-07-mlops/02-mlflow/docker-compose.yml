@@ -1,0 +1,22 @@
+services:
+
+  # ── MLflow Tracking Server ────────────────────────────
+  # Stores run data locally in ./mlruns (bind mounted)
+  mlflow:
+    image: python:3.11-slim
+    command: >
+      bash -c "pip install -q mlflow==2.9.2 &&
+               mlflow server
+               --backend-store-uri sqlite:///mlflow.db
+               --default-artifact-root /mlruns
+               --host 0.0.0.0
+               --port 5000"
+    ports:
+      - "5000:5000"          # MLflow UI at http://localhost:5000
+    volumes:
+      - ./mlruns:/mlruns     # Persist experiment data on your machine
+      - mlflow-db:/mlflow.db # SQLite database
+    restart: unless-stopped
+
+volumes:
+  mlflow-db:

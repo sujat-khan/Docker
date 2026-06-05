@@ -1,0 +1,20 @@
+# ❌ DON'T DO THIS — Example of common Dockerfile mistakes
+
+# BAD: unpinned "latest" tag — could change anytime
+FROM python:latest
+
+# BAD: no PYTHONUNBUFFERED — logs are delayed
+# BAD: no WORKDIR — files end up in /
+
+# BAD: copying everything first — cache invalidated on ANY change
+COPY . .
+
+# BAD: separate RUN commands — extra layers
+RUN apt-get update
+RUN apt-get install -y gcc
+RUN pip install -r requirements.txt
+
+# BAD: running as root (default) — security risk
+# BAD: no HEALTHCHECK
+# BAD: using flask dev server in production
+CMD ["python", "app.py"]

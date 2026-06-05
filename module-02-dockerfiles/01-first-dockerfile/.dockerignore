@@ -1,0 +1,38 @@
+# .dockerignore — files to exclude from the Docker build context
+#
+# Docker sends everything in the current directory to the build engine.
+# This file tells Docker what to SKIP, keeping builds fast and images clean.
+
+# Python cache files — not needed in the image
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments — use pip inside Docker instead
+.venv/
+venv/
+env/
+
+# Git — don't include version control in the image
+.git/
+.gitignore
+
+# Secrets — NEVER include these in an image!
+.env
+*.key
+*.pem
+secrets/
+
+# Logs and temp files
+*.log
+*.tmp
+.DS_Store
+
+# IDE config files
+.vscode/
+.idea/
+*.swp
+
+# The README doesn't need to be in the image
+README.md
